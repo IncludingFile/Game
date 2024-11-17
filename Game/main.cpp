@@ -13,7 +13,9 @@ using namespace std;
 
 int main()
 {
-    RenderWindow window(VideoMode(1920, 1080), L"刺杀黄嘉骏",Style::Fullscreen);
+    RenderWindow window(VideoMode::getDesktopMode() , L"刺杀黄嘉骏",Style::Fullscreen);
+    HWND hWnd = GetForegroundWindow();
+
     Font font;
 
     if (!font.loadFromFile(MYFONT)) {
@@ -38,11 +40,11 @@ int main()
     while (window.isOpen()&& chrono::duration_cast<chrono::seconds>(end_time - start_time).count() < START_TIME) {
         
         while (window.pollEvent(event)) {
-            if (event.type == Event::Closed) {
+            if (event.type == Event::Closed||( event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
                 window.close();
             }
-            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
-                window.close();
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::M) {// 按下M键最小化窗口             
+                ShowWindow(hWnd, SW_MINIMIZE);
             }
         }
         
@@ -57,17 +59,17 @@ int main()
     // 绘制游戏元素
         Sprite HJJ(HJJ_texture);
         text.setString(L"He is our target!We must kill him!");
-        text.setPosition(1920 / 2 - text.getLocalBounds().width / 2, 1000);
+        text.setPosition(1920 / 2 - text.getLocalBounds().width / 2, 900);
         HJJ.setPosition(1920 / 2 - HJJ.getTextureRect().width / 2, 0);
     while (window.isOpen())
     {
         while (window.pollEvent(event))
         {
-            if (event.type == Event::Closed) {
+            if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
                 window.close();
             }
-            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
-                window.close();
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::M) {// 按下M键最小化窗口
+                ShowWindow(hWnd, SW_MINIMIZE);
             }
         }
         // 处理游戏逻辑
